@@ -14,11 +14,19 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('phone')->unique();
+            $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('firebase_uid')->nullable()->unique();
+            $table->string('password')->nullable();
+            $table->string('referral_code', 12)->unique();
+            $table->foreignId('referred_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->enum('status', ['registered', 'pending', 'active'])->default('registered');
+            $table->boolean('has_paid')->default(false);
             $table->rememberToken();
             $table->timestamps();
+
+            $table->index('status');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

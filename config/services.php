@@ -35,4 +35,20 @@ return [
         ],
     ],
 
+    'razorpay' => [
+        'key' => env('RAZORPAY_KEY'),
+        'secret' => env('RAZORPAY_SECRET'),
+        'webhook_secret' => env('RAZORPAY_WEBHOOK_SECRET'),
+    ],
+
+    'msg91' => [
+        'auth_key' => env('MSG91_AUTH_KEY'),
+        'sender_id' => env('MSG91_SENDER_ID'),
+        // DLT-registered template IDs — replace with real MSG91 template IDs before launch.
+        'templates' => [
+            'activation_success' => env('MSG91_TEMPLATE_ACTIVATION', 'activation_success'),
+            'payment_receipt' => env('MSG91_TEMPLATE_PAYMENT_RECEIPT', 'payment_receipt'),
+        ],
+    ],
+
 ];

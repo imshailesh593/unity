@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -6,4 +7,74 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Unity brand palette — sampled from the logo gradient (blue → teal → purple → magenta → orange). */
+    --color-brand-blue: #0064e6;
+    --color-brand-blue-dark: #0050c8;
+    --color-brand-teal: #00aa96;
+    --color-brand-purple: #8c14fa;
+    --color-brand-magenta: #f00078;
+    --color-brand-orange: #fa6400;
+
+    --color-warm-50: #fefaf6;
+    --color-warm-100: #fdf3ea;
+}
+
+/* Marathi (Devanagari) reads better in a script-appropriate typeface than
+   Instrument Sans falling back to whatever the OS happens to ship. Scoped via
+   :lang() so it applies automatically whenever <html lang="mr"> is set —
+   no per-template classes needed. */
+:lang(mr) {
+    font-family: 'Mukta', var(--font-sans);
+}
+
+/* Orbital diagram — "how Unity works" explainer. Each ring rotates a fixed
+   speed; the counter-rotation on the inner pill keeps its label upright.
+   Duration is baked into each class (not split into a separate Tailwind
+   arbitrary-value utility) — this file is unlayered CSS, which always beats
+   Tailwind's @layer utilities in the cascade regardless of source order, so
+   a split duration utility would get silently overridden by the shorthand
+   `animation` declaration below (which resets duration to its 0s default). */
+@keyframes orbit-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+@keyframes orbit-spin-reverse {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+}
+
+.orbit-ring-outer  { animation: orbit-spin 26s linear infinite; }
+.orbit-label-outer { animation: orbit-spin-reverse 26s linear infinite; }
+
+.orbit-ring-middle  { animation: orbit-spin-reverse 19s linear infinite; }
+.orbit-label-middle { animation: orbit-spin 19s linear infinite; }
+
+.orbit-ring-inner  { animation: orbit-spin 14s linear infinite; }
+.orbit-label-inner { animation: orbit-spin-reverse 14s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+    .orbit-ring-outer, .orbit-label-outer,
+    .orbit-ring-middle, .orbit-label-middle,
+    .orbit-ring-inner, .orbit-label-inner {
+        animation: none;
+    }
+}
+
+/* Unity network graphic — individual people (small nodes) pulsing gently as
+   they connect to the community (the larger centre node). */
+@keyframes unity-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+}
+.unity-node {
+    animation: unity-pulse 3s ease-in-out infinite;
+    transform-origin: center;
+    transform-box: fill-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .unity-node {
+        animation: none;
+    }
 }
