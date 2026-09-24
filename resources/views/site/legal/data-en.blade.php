@@ -2,11 +2,10 @@
 
 <h2>1. What we store</h2>
 <ul>
-    <li>Profile data — name, phone number, email, referral code, activation status.</li>
+    <li>Profile data — name, phone number, email, activation status.</li>
     <li>Payment records — amount, gateway, transaction reference, and status (not your card/UPI details, which Razorpay handles directly).</li>
-    <li>Referral relationships — who referred whom, and whether that referral has completed its own activation payment.</li>
     <li>Device tokens — used solely to deliver push notifications, removable at any time by uninstalling the app or revoking notification permissions.</li>
-    <li>In-app notifications — records of messages sent to you (activation status, payment receipts, referral updates, admin broadcasts).</li>
+    <li>In-app notifications — records of messages sent to you (activation status, payment receipts, admin broadcasts).</li>
 </ul>
 
 <h2>2. Where your data is stored</h2>

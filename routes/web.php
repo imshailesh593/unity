@@ -28,6 +28,7 @@ Route::get('/child-safety-standards', [LegalController::class, 'childSafety'])->
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'show'])->name('login');
     Route::post('/login/verify', [LoginController::class, 'verify'])->name('login.verify');
+    Route::post('/login/password', [LoginController::class, 'password'])->middleware('throttle:6,1')->name('login.password');
     Route::post('/register', [RegisterController::class, 'register'])->name('register');
 });
 

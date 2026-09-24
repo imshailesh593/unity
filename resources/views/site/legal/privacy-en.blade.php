@@ -4,7 +4,6 @@
 <ul>
     <li><strong>Account information</strong> — your name, phone number, and (optionally) email address.</li>
     <li><strong>Identity verification</strong> — a Firebase-issued identifier confirming your phone number was verified by OTP.</li>
-    <li><strong>Referral data</strong> — your referral code, who referred you, and who you've referred.</li>
     <li><strong>Payment records</strong> — the amount, status, and transaction reference for your activation fee payment (processed by Razorpay; we do not receive or store your card, UPI, or bank details).</li>
     <li><strong>Device token</strong> — a Firebase Cloud Messaging identifier, so we can deliver push notifications to your device.</li>
     <li><strong>Content you submit</strong> — anything you post through an approved author account (business listings, updates).</li>
@@ -13,7 +12,7 @@
 <h2>2. How we use your information</h2>
 <ul>
     <li>To verify your identity and activate your account.</li>
-    <li>To operate the referral system and track activation progress.</li>
+    <li>To track your account's activation status.</li>
     <li>To process your activation fee payment and issue a receipt.</li>
     <li>To send you transactional notifications — OTPs, activation confirmations, payment receipts, and relevant community updates.</li>
     <li>To keep the platform safe — detecting fraud, fake accounts, and abuse.</li>

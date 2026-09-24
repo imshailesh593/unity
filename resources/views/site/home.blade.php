@@ -29,6 +29,15 @@
                         {{ __('site.home.app_store') }}
                     </a>
                 @endif
+                @auth
+                    <a href="{{ route('dashboard') }}" class="rounded-full border border-neutral-300 bg-white px-6 py-3 text-sm font-semibold text-neutral-800 hover:border-brand-blue hover:text-brand-blue">
+                        {{ __('site.nav.dashboard') }}
+                    </a>
+                @else
+                    <a href="{{ route('login') }}" class="rounded-full border border-neutral-300 bg-white px-6 py-3 text-sm font-semibold text-neutral-800 hover:border-brand-blue hover:text-brand-blue">
+                        {{ __('site.nav.login') }}
+                    </a>
+                @endauth
             </div>
 
             <x-unity-network />
@@ -74,7 +83,7 @@
             <h2 class="text-2xl font-bold text-neutral-900 sm:text-3xl">{{ __('site.home.activation_heading') }}</h2>
             <p class="mx-auto mt-3 max-w-xl text-neutral-500">{{ __('site.home.activation_subheading') }}</p>
         </div>
-        <div class="mt-12 grid gap-8 sm:grid-cols-3">
+        <div class="mt-12 grid gap-8 sm:grid-cols-2">
             <div>
                 <div class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-blue text-sm font-bold text-white">1</div>
                 <h3 class="mt-4 font-semibold text-neutral-900">{{ __('site.home.step1_title') }}</h3>
@@ -85,11 +94,6 @@
                 <h3 class="mt-4 font-semibold text-neutral-900">{{ __('site.home.step2_title', ['fee' => $activationFee]) }}</h3>
                 <p class="mt-2 text-sm text-neutral-500">{{ __('site.home.step2_desc') }}</p>
             </div>
-            <div>
-                <div class="flex h-9 w-9 items-center justify-center rounded-full bg-brand-blue text-sm font-bold text-white">3</div>
-                <h3 class="mt-4 font-semibold text-neutral-900">{{ __('site.home.step3_title', ['count' => $requiredReferrals]) }}</h3>
-                <p class="mt-2 text-sm text-neutral-500">{{ __('site.home.step3_desc') }}</p>
-            </div>
         </div>
 
         {{-- Why the activation fee --}}
@@ -98,7 +102,7 @@
             <p class="mt-2 max-w-2xl text-sm text-neutral-500">
                 {{ __('site.home.fee_intro') }}
             </p>
-            <div class="mt-8 grid gap-6 sm:grid-cols-3">
+            <div class="mt-8 grid gap-6 sm:grid-cols-2">
                 <div class="flex gap-3">
                     <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-orange/10 text-brand-orange">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9Z"/></svg>
@@ -115,15 +119,6 @@
                     <div>
                         <p class="font-medium text-neutral-900">{{ __('site.home.fee_reason2_title') }}</p>
                         <p class="mt-1 text-sm text-neutral-500">{{ __('site.home.fee_reason2_desc') }}</p>
-                    </div>
-                </div>
-                <div class="flex gap-3">
-                    <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-purple/10 text-brand-purple">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"/></svg>
-                    </span>
-                    <div>
-                        <p class="font-medium text-neutral-900">{{ __('site.home.fee_reason3_title') }}</p>
-                        <p class="mt-1 text-sm text-neutral-500">{{ __('site.home.fee_reason3_desc', ['count' => $requiredReferrals]) }}</p>
                     </div>
                 </div>
             </div>

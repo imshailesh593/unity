@@ -5,7 +5,7 @@ return [
     'app_store_url' => env('APP_STORE_URL'),
 
     // Bump this whenever legal page content actually changes.
-    'legal_updated_at' => '26 July 2026',
+    'legal_updated_at' => '24 September 2026',
 
     'contact_phone' => env('UNITY_CONTACT_PHONE', '+91 73979 53636'),
     'whatsapp_number' => env('UNITY_WHATSAPP_NUMBER', '917397953636'),

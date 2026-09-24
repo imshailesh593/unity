@@ -27,6 +27,37 @@
                     </button>
 
                     <p class="mt-4 text-xs text-neutral-400">{{ __('site.auth.recaptcha_notice') }}</p>
+
+                    <button id="show-password-step-btn" type="button" class="mt-4 w-full text-center text-xs font-semibold text-neutral-500 hover:text-brand-blue">
+                        {{ __('site.auth.login_with_password') }}
+                    </button>
+                </div>
+
+                {{-- Alternate: phone + password (accounts with a password set only) --}}
+                <div id="step-password" class="hidden">
+                    <h1 class="text-2xl font-bold text-neutral-900">{{ __('site.auth.login_heading') }}</h1>
+                    <p class="mt-2 text-sm text-neutral-600">{{ __('site.auth.login_subheading') }}</p>
+
+                    <label for="password-phone" class="mt-6 block text-sm font-medium text-neutral-700">{{ __('site.auth.phone_label') }}</label>
+                    <div class="mt-1 flex items-center rounded-lg border border-neutral-300 focus-within:border-brand-blue">
+                        <span class="pl-3 text-sm text-neutral-500">+91</span>
+                        <input type="tel" id="password-phone" inputmode="numeric" maxlength="10" autocomplete="tel"
+                               placeholder="{{ __('site.auth.phone_placeholder') }}"
+                               class="w-full rounded-lg border-0 bg-transparent px-3 py-2.5 text-sm focus:outline-none focus:ring-0">
+                    </div>
+
+                    <label for="password" class="mt-4 block text-sm font-medium text-neutral-700">{{ __('site.auth.password_label') }}</label>
+                    <input type="password" id="password" autocomplete="current-password"
+                           class="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm focus:border-brand-blue focus:outline-none focus:ring-0">
+
+                    <button id="password-login-btn" type="button"
+                            class="mt-5 w-full rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-white shadow-sm shadow-brand-blue/30 hover:bg-brand-blue-dark disabled:opacity-60">
+                        {{ __('site.auth.verify_otp') }}
+                    </button>
+
+                    <button id="show-otp-step-btn" type="button" class="mt-4 w-full text-center text-xs font-semibold text-neutral-500 hover:text-brand-blue">
+                        {{ __('site.auth.login_with_otp') }}
+                    </button>
                 </div>
 
                 {{-- Step 2: OTP --}}
@@ -62,10 +93,6 @@
                     <input type="email" id="email" autocomplete="email"
                            class="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm focus:border-brand-blue focus:outline-none focus:ring-0">
 
-                    <label for="referral_code" class="mt-4 block text-sm font-medium text-neutral-700">{{ __('site.auth.referral_code_label') }}</label>
-                    <input type="text" id="referral_code" value="{{ $referralCode }}"
-                           class="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm uppercase focus:border-brand-blue focus:outline-none focus:ring-0">
-
                     <button id="create-account-btn" type="button"
                             class="mt-5 w-full rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-white shadow-sm shadow-brand-blue/30 hover:bg-brand-blue-dark disabled:opacity-60">
                         {{ __('site.auth.create_account') }}
@@ -98,6 +125,7 @@
         const stepPhone = document.getElementById('step-phone');
         const stepOtp = document.getElementById('step-otp');
         const stepRegister = document.getElementById('step-register');
+        const stepPassword = document.getElementById('step-password');
         const errorEl = document.getElementById('auth-error');
 
         let confirmationResult = null;
@@ -219,7 +247,6 @@
                     id_token: pendingIdToken,
                     name: document.getElementById('name').value,
                     email: document.getElementById('email').value,
-                    referral_code: document.getElementById('referral_code').value,
                 });
 
                 if (ok && data.redirect) {
@@ -228,6 +255,39 @@
                     showError(Object.values(data.errors)[0][0]);
                 } else {
                     showError(data.message);
+                }
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                setBusy(event.currentTarget, false);
+            }
+        });
+
+        document.getElementById('show-password-step-btn').addEventListener('click', () => {
+            clearError();
+            stepPhone.classList.add('hidden');
+            stepPassword.classList.remove('hidden');
+        });
+
+        document.getElementById('show-otp-step-btn').addEventListener('click', () => {
+            clearError();
+            stepPassword.classList.add('hidden');
+            stepPhone.classList.remove('hidden');
+        });
+
+        document.getElementById('password-login-btn').addEventListener('click', async (event) => {
+            clearError();
+            setBusy(event.currentTarget, true);
+            try {
+                const { ok, data } = await postJson(@json(route('login.password')), {
+                    phone: document.getElementById('password-phone').value,
+                    password: document.getElementById('password').value,
+                });
+
+                if (ok && data.redirect) {
+                    window.location.href = data.redirect;
+                } else {
+                    showError(data.message || @json(__('site.auth.invalid_credentials')));
                 }
             } catch (error) {
                 showError(error.message);

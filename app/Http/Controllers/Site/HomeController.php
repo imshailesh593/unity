@@ -18,7 +18,6 @@ class HomeController extends Controller
 
         return view('site.home', [
             'activationFee' => $activation->activationFee(),
-            'requiredReferrals' => $activation->requiredReferrals(),
             'latestBlogs' => $latestBlogs,
         ]);
     }

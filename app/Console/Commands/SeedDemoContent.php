@@ -81,7 +81,7 @@ class SeedDemoContent extends Command
             [
                 'title' => 'The ₹199 Activation Fee — Where It Actually Goes',
                 'excerpt' => 'No ads, no data-selling, no venture funding pressure — just a small one-time fee to keep fake accounts out.',
-                'content' => "Unity runs on a simple idea: a small one-time activation fee keeps the platform free of fake accounts and free of the ad-driven incentives that push most social platforms toward outrage and addiction.\n\nThe ₹199 fee, combined with two paid referrals, funds server costs, SMS/OTP delivery, and payment processing — with nothing left over for advertising, because there are no ads to sell.",
+                'content' => "Unity runs on a simple idea: a small one-time activation fee keeps the platform free of fake accounts and free of the ad-driven incentives that push most social platforms toward outrage and addiction.\n\nThe ₹199 fee funds server costs, SMS/OTP delivery, and payment processing — with nothing left over for advertising, because there are no ads to sell.",
                 'featured_image' => 'https://picsum.photos/seed/unity-fee/900/600',
             ],
             [

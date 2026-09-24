@@ -16,10 +16,7 @@ class DashboardController extends Controller
 
         return view('site.dashboard', [
             'user' => $user,
-            'requiredReferrals' => $this->activation->requiredReferrals(),
-            'paidReferrals' => $this->activation->paidReferralsCount($user),
             'activationFee' => $this->activation->activationFee(),
-            'referralLink' => route('referral.landing', $user->referral_code),
         ]);
     }
 }

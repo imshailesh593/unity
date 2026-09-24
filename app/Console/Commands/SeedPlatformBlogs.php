@@ -36,7 +36,7 @@ class SeedPlatformBlogs extends Command
             [
                 'title' => 'The ₹199 Activation Fee — Where It Actually Goes',
                 'excerpt' => 'No ads, no data-selling, no venture funding pressure — just a small one-time fee to keep fake accounts out.',
-                'content' => "Unity runs on a simple idea: a small one-time activation fee keeps the platform free of fake accounts, and free of the advertising incentives that push most social platforms toward outrage and addiction.\n\nThe ₹199 fee, combined with two paid referrals, funds server costs, SMS and OTP delivery, and payment processing. There is nothing left over for advertising, because there are no ads to sell — and we do not sell member data.\n\nActivation is calculated by our systems, not claimed manually. Your profile always shows exactly where you stand: whether the fee is paid, and how many of the people you referred have joined and paid theirs.",
+                'content' => "Unity runs on a simple idea: a small one-time activation fee keeps the platform free of fake accounts, and free of the advertising incentives that push most social platforms toward outrage and addiction.\n\nThe ₹199 fee funds server costs, SMS and OTP delivery, and payment processing. There is nothing left over for advertising, because there are no ads to sell — and we do not sell member data.\n\nActivation is calculated by our systems, not claimed manually. Your profile always shows exactly where you stand.",
             ],
         ];
 

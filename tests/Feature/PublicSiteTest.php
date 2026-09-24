@@ -50,16 +50,13 @@ it('renders about-unity content when published', function () {
     $this->get('/about')->assertOk()->assertSee('Our mission is community growth.', false);
 });
 
-it('shows the referrer name on a valid referral landing page', function () {
+it('redirects old referral links to the home page without showing referral content', function () {
     $referrer = User::factory()->create(['name' => 'Jane Doe']);
 
-    $this->get('/r/'.$referrer->referral_code)
-        ->assertOk()
-        ->assertSee('Jane Doe');
+    $this->get('/r/'.$referrer->referral_code)->assertRedirect(route('home'));
+    $this->get('/r/DOESNOTEXIST')->assertRedirect(route('home'));
 });
 
-it('shows a graceful fallback for an unknown referral code', function () {
-    $this->get('/r/DOESNOTEXIST')
-        ->assertOk()
-        ->assertSee('expired');
+it('does not mention the referral program on the home page', function () {
+    $this->get('/')->assertOk()->assertDontSee('referral', false)->assertDontSee('Invite', false);
 });

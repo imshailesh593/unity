@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 
 class ReferralLandingController extends Controller
 {
+    /**
+     * The referral program is switched off while payment-gateway approval is
+     * pending. Old shared links land on the home page instead of a 404.
+     */
     public function show(string $code)
     {
-        $referrer = User::query()->where('referral_code', $code)->first();
-
-        return view('site.referral', compact('referrer', 'code'));
+        return redirect()->route('home');
     }
 }

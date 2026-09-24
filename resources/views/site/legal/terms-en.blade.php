@@ -7,10 +7,10 @@
 <p>Registration requires a valid phone number, verified by one-time password (OTP). You are responsible for keeping your account credentials secure and for all activity under your account.</p>
 
 <h2>3. Account activation</h2>
-<p>Your account remains in a limited "pending" state until both of the following are true: (a) you have paid the one-time activation fee shown in the app at the time of payment, and (b) at least the required number of people you referred have also registered and paid their own activation fee. Activation status is determined solely by our systems and cannot be manually claimed.</p>
+<p>Your account remains in a limited "pending" state until you have paid the one-time activation fee shown at the time of payment. Activation status is determined solely by our systems and cannot be manually claimed.</p>
 
-<h2>4. Referral program</h2>
-<p>The referral program is designed to grow a trusted local network. Referral links may only be shared with real people who consent to receive them. Creating fake accounts, self-referring, or otherwise manipulating the referral system is prohibited and may result in account suspension. The referral program does not offer cash payouts or monetary rewards for referrals — its only effect is on your own account's activation status.</p>
+<h2>4. Review &amp; moderation</h2>
+<p>Business listings and blog posts are reviewed by our admin team before they are published. We may refuse or remove any content that does not meet our community standards.</p>
 
 <h2>5. Payments</h2>
 <p>The activation fee is processed securely through Razorpay. See our <a href="{{ route('legal.refund') }}">Refund &amp; Cancellation Policy</a> for details on when a refund may apply.</p>
@@ -29,7 +29,7 @@
 <p>Posting business listings and community updates is limited to accounts approved as authors by our admin team. You retain ownership of content you submit, but grant Unity a licence to display it within the app for the purpose of connecting it with the community. We reserve the right to remove any content that violates these Terms or our community standards, without prior notice.</p>
 
 <h2>8. Disclaimers</h2>
-<p>Unity is a directory platform that connects people with local businesses — it does not itself provide the goods or services offered by listed businesses, and is not a party to any transaction or arrangement between a member and a listed business. We do not guarantee the accuracy, quality, or outcome of any listing or referral.</p>
+<p>Unity is a directory platform that connects people with local businesses — it does not itself provide the goods or services offered by listed businesses, and is not a party to any transaction or arrangement between a member and a listed business. We do not guarantee the accuracy, quality, or outcome of any listing or introduction.</p>
 
 <h2>9. Limitation of liability</h2>
 <p>To the maximum extent permitted by law, Unity and Maveric Infotech shall not be liable for any indirect, incidental, or consequential damages arising from your use of the platform, including but not limited to reliance on content posted by other members.</p>

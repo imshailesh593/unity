@@ -52,35 +52,6 @@
                             <p id="payment-status" class="mt-3 hidden text-sm"></p>
                         @endunless
                     </div>
-
-                    {{-- Step: referrals --}}
-                    <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
-                        <h2 class="font-semibold text-neutral-900">{{ __('site.dashboard.step_referrals_title', ['count' => $requiredReferrals]) }}</h2>
-                        <p class="mt-1 text-sm text-neutral-600">{{ __('site.dashboard.step_referrals_desc', ['count' => $requiredReferrals]) }}</p>
-
-                        <div class="mt-4">
-                            <div class="h-2 w-full overflow-hidden rounded-full bg-neutral-100">
-                                <div class="h-full rounded-full bg-brand-teal" style="width: {{ $requiredReferrals > 0 ? min(100, round($paidReferrals / $requiredReferrals * 100)) : 0 }}%"></div>
-                            </div>
-                            <p class="mt-2 text-xs font-medium text-neutral-500">
-                                {{ __('site.dashboard.referrals_progress', ['paid' => $paidReferrals, 'required' => $requiredReferrals]) }}
-                            </p>
-                        </div>
-
-                        <label class="mt-5 block text-xs font-medium text-neutral-500">{{ __('site.dashboard.referral_link_label') }}</label>
-                        <div class="mt-1 flex items-center gap-2">
-                            <input id="referral-link" type="text" readonly value="{{ $referralLink }}"
-                                   class="w-full truncate rounded-lg border border-neutral-300 bg-neutral-50 px-3 py-2 text-xs text-neutral-600">
-                            <button id="copy-link-btn" type="button"
-                                    class="shrink-0 rounded-lg border border-neutral-300 px-3 py-2 text-xs font-semibold text-neutral-700 hover:border-brand-blue hover:text-brand-blue">
-                                {{ __('site.dashboard.copy_link') }}
-                            </button>
-                        </div>
-                        <a href="https://wa.me/?text={{ urlencode($referralLink) }}" target="_blank" rel="noopener noreferrer"
-                           class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-brand-teal hover:underline">
-                            {{ __('site.dashboard.share_whatsapp') }}
-                        </a>
-                    </div>
                 </div>
             @endunless
         </div>
@@ -151,20 +122,5 @@
             });
         </script>
     @endunless
-
-    <script>
-        document.getElementById('copy-link-btn')?.addEventListener('click', async (event) => {
-            const input = document.getElementById('referral-link');
-            try {
-                await navigator.clipboard.writeText(input.value);
-                const button = event.currentTarget;
-                const original = button.textContent;
-                button.textContent = @json(__('site.dashboard.copied'));
-                setTimeout(() => { button.textContent = original; }, 2000);
-            } catch (error) {
-                input.select();
-            }
-        });
-    </script>
 
 @endsection
