@@ -6,7 +6,7 @@
     <li><strong>Identity verification</strong> — a Firebase-issued identifier confirming your phone number was verified by OTP.</li>
     <li><strong>Payment records</strong> — the amount, status, and transaction reference for your activation fee payment (processed by Razorpay; we do not receive or store your card, UPI, or bank details).</li>
     <li><strong>Device token</strong> — a Firebase Cloud Messaging identifier, so we can deliver push notifications to your device.</li>
-    <li><strong>Content you submit</strong> — anything you post through an approved author account (business listings, updates).</li>
+    <li><strong>Content you submit</strong> — anything you post through an approved author account (community posts, updates).</li>
 </ul>
 
 <h2>2. How we use your information</h2>

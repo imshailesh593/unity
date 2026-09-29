@@ -10,7 +10,7 @@
 <p>Your account remains in a limited "pending" state until you have paid the one-time activation fee shown at the time of payment. Activation status is determined solely by our systems and cannot be manually claimed.</p>
 
 <h2>4. Review &amp; moderation</h2>
-<p>Business listings and blog posts are reviewed by our admin team before they are published. We may refuse or remove any content that does not meet our community standards.</p>
+<p>Community posts and blog posts are reviewed by our admin team before they are published. We may refuse or remove any content that does not meet our community standards.</p>
 
 <h2>5. Payments</h2>
 <p>The activation fee is processed securely through Razorpay. See our <a href="{{ route('legal.refund') }}">Refund &amp; Cancellation Policy</a> for details on when a refund may apply.</p>
@@ -18,7 +18,7 @@
 <h2>6. Acceptable use</h2>
 <p>You agree not to:</p>
 <ul>
-    <li>Post false, misleading, or fraudulent business listings or information.</li>
+    <li>Post false, misleading, or fraudulent content or information.</li>
     <li>Impersonate another person or organisation.</li>
     <li>Harass, threaten, or abuse other members.</li>
     <li>Use the platform for any unlawful purpose.</li>
@@ -26,10 +26,10 @@
 </ul>
 
 <h2>7. Content &amp; posting</h2>
-<p>Posting business listings and community updates is limited to accounts approved as authors by our admin team. You retain ownership of content you submit, but grant Unity a licence to display it within the app for the purpose of connecting it with the community. We reserve the right to remove any content that violates these Terms or our community standards, without prior notice.</p>
+<p>Posting content and community updates is limited to accounts approved as authors by our admin team. You retain ownership of content you submit, but grant Unity a licence to display it within the app for the purpose of connecting it with the community. We reserve the right to remove any content that violates these Terms or our community standards, without prior notice.</p>
 
 <h2>8. Disclaimers</h2>
-<p>Unity is a directory platform that connects people with local businesses — it does not itself provide the goods or services offered by listed businesses, and is not a party to any transaction or arrangement between a member and a listed business. We do not guarantee the accuracy, quality, or outcome of any listing or introduction.</p>
+<p>Unity is a closed community platform for verified members — it does not itself provide any goods, services, or outcomes discussed between members, and is not a party to any arrangement between them. We do not guarantee the accuracy, quality, or outcome of any post or introduction.</p>
 
 <h2>9. Limitation of liability</h2>
 <p>To the maximum extent permitted by law, Unity and Maveric Infotech shall not be liable for any indirect, incidental, or consequential damages arising from your use of the platform, including but not limited to reliance on content posted by other members.</p>

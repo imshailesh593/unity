@@ -9,11 +9,14 @@ use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
 #[Signature('app:seed-platform-blogs')]
-#[Description('Idempotent: publishes the two factual posts describing how Unity itself works (listing verification and the activation fee), and removes the older cause/fundraiser-themed post this replaces. Safe for production — these describe real platform policy, not invented community activity.')]
+#[Description('Idempotent: publishes the two factual posts describing how Unity itself works (post review and the activation fee), and removes the older cause/business-listing-themed posts these replace. Safe for production — these describe real platform policy, not invented community activity.')]
 class SeedPlatformBlogs extends Command
 {
-    /** Slug of the retired cause-themed post this command used to publish. */
-    private const RETIRED_SLUG = 'how-unity-verifies-every-cause-before-it-goes-live';
+    /** Slugs of retired posts this command used to publish under an earlier positioning. */
+    private const RETIRED_SLUGS = [
+        'how-unity-verifies-every-cause-before-it-goes-live',
+        'how-unity-verifies-every-business-listing-before-it-goes-live',
+    ];
 
     public function handle(): int
     {
@@ -25,13 +28,13 @@ class SeedPlatformBlogs extends Command
             return self::FAILURE;
         }
 
-        $removed = Blog::query()->where('slug', self::RETIRED_SLUG)->delete();
+        $removed = Blog::query()->whereIn('slug', self::RETIRED_SLUGS)->delete();
 
         $posts = [
             [
-                'title' => 'How Unity Verifies Every Business Listing Before It Goes Live',
-                'excerpt' => "Transparency isn't optional when people are choosing who to trust — here's our verification process.",
-                'content' => "Every business listing on Unity goes through a manual review before it is published. Our team checks the owner's identity, verifies the business is real wherever possible, and only then does a listing go live. Listings that clear this check can display a 'Verified by admin' badge.\n\nWe would rather have fewer listings and full trust than a flood of unverified entries. If you are a business owner, this review usually takes 24 to 48 hours.\n\nPosting a listing is limited to members our admin team has approved as authors. The same applies to SOS alerts, which are restricted to approved authors. This is deliberate: an open posting system would be faster, but it would also make the platform trivial to abuse.",
+                'title' => 'How Unity Reviews Every Post Before It Goes Live',
+                'excerpt' => "Transparency isn't optional in a closed community — here's our review process.",
+                'content' => "Every post on Unity goes through a manual review before it is published. Our team checks that it comes from a verified member in good standing, and only then does it go live.\n\nWe would rather have fewer posts and full trust than an open, unmoderated feed. Review usually takes 24 to 48 hours.\n\nPosting is limited to members our admin team has approved as authors. The same applies to SOS alerts, which are restricted to approved authors. This is deliberate: an open posting system would be faster, but it would also make the community trivial to abuse.",
             ],
             [
                 'title' => 'The ₹199 Activation Fee — Where It Actually Goes',
