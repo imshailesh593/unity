@@ -48,7 +48,6 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
         // Organizer-tier only (enforced in StoreCauseRequest::authorize()).
         Route::post('causes', [CauseController::class, 'store']);
-        Route::post('causes/{slug}/contribute', [CauseController::class, 'contribute']);
 
         // Author-tier only (enforced in StoreSosAlertRequest::authorize()).
         Route::post('sos', [SosAlertController::class, 'store']);

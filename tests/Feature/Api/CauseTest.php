@@ -2,7 +2,6 @@
 
 use App\Models\Cause;
 use App\Models\User;
-use App\Services\PaymentGatewayService;
 
 it('lists only published causes', function () {
     Cause::factory()->create(['status' => 'published', 'title' => 'Live Cause', 'slug' => 'live-cause']);
@@ -57,24 +56,29 @@ it('allows an organizer to create a cause, starting as pending_review', function
     ]);
 });
 
-it('lets an authenticated user initiate a contribution to a published cause', function () {
-    $this->mock(PaymentGatewayService::class, function ($mock) {
-        $mock->shouldReceive('createOrder')->andReturn(['id' => 'order_cause_1', 'amount' => 500, 'currency' => 'INR']);
-    });
+it('has no contribution endpoint — cause money-collection is disabled', function () {
+    Cause::factory()->create(['status' => 'published', 'slug' => 'help-anita']);
+    $member = User::factory()->create();
 
-    $cause = Cause::factory()->create(['status' => 'published', 'slug' => 'help-anita']);
-    $contributor = User::factory()->create();
+    $this->actingAs($member, 'sanctum')
+        ->postJson('/api/v1/causes/help-anita/contribute', ['amount' => 500])
+        ->assertNotFound();
+});
 
-    $response = $this->actingAs($contributor, 'sanctum')
-        ->postJson('/api/v1/causes/help-anita/contribute', ['amount' => 500]);
+it('allows an organizer to create a cause without a goal amount', function () {
+    $organizer = User::factory()->organizer()->create();
 
-    $response->assertCreated()->assertJsonPath('order_id', 'order_cause_1');
+    $response = $this->actingAs($organizer, 'sanctum')
+        ->postJson('/api/v1/causes', [
+            'title' => 'New Cause',
+            'content' => 'Details of the cause',
+        ]);
 
-    $this->assertDatabaseHas('payments', [
-        'user_id' => $contributor->id,
-        'cause_id' => $cause->id,
-        'purpose' => 'cause_contribution',
-        'amount' => 500,
-        'status' => 'pending',
+    $response->assertCreated();
+    $this->assertDatabaseHas('causes', [
+        'title' => 'New Cause',
+        'organizer_id' => $organizer->id,
+        'goal_amount' => 0,
+        'status' => 'pending_review',
     ]);
 });

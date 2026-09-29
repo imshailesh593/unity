@@ -18,7 +18,7 @@ class StoreCauseRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'excerpt' => ['nullable', 'string', 'max:500'],
             'content' => ['required', 'string'],
-            'goal_amount' => ['required', 'integer', 'min:1000'],
+            'goal_amount' => ['nullable', 'integer', 'min:0'],
             'deadline' => ['nullable', 'date', 'after:today'],
         ];
     }
