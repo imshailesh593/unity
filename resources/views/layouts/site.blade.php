@@ -94,15 +94,19 @@
                         @endif
                     </ul>
                     <h3 class="mt-6 text-sm font-semibold text-neutral-900">{{ __('site.footer.contact') }}</h3>
-                    <p class="mt-4 text-sm text-neutral-500">
+                    <p class="mt-4 text-sm font-medium text-neutral-700">Unity Ventures Sales and Services</p>
+                    <p class="mt-1 text-sm text-neutral-500">
                         <a href="tel:{{ config('unity.contact_phone') }}" class="hover:text-brand-blue">{{ config('unity.contact_phone') }}</a>
+                    </p>
+                    <p class="mt-1 text-sm text-neutral-500">
+                        <a href="mailto:{{ config('unity.contact_email') }}" class="hover:text-brand-blue">{{ config('unity.contact_email') }}</a>
                     </p>
                 </div>
             </div>
             <div class="mt-12 flex flex-col items-start justify-between gap-4 border-t border-neutral-100 pt-6 text-xs text-neutral-400 sm:flex-row sm:items-center">
                 <div class="space-y-1">
                     <p>&copy; {{ __('site.footer.copyright', ['year' => now()->year]) }}</p>
-                    <p>{{ __('site.footer.developed_by', ['company' => 'Unity Ventures Sales and Services']) }}</p>
+                    <p>{{ __('site.footer.developed_by', ['company' => 'Maveric Infotech']) }}</p>
                 </div>
                 <x-language-switcher />
             </div>

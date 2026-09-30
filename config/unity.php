@@ -7,7 +7,8 @@ return [
     // Bump this whenever legal page content actually changes.
     'legal_updated_at' => '24 September 2026',
 
-    'contact_phone' => env('UNITY_CONTACT_PHONE', '+91 73979 53636'),
+    'contact_phone' => env('UNITY_CONTACT_PHONE', '+91 99600 38829'),
+    'contact_email' => env('UNITY_CONTACT_EMAIL', 'unityventuresales2026@gmail.com'),
     'whatsapp_number' => env('UNITY_WHATSAPP_NUMBER', '917397953636'),
 
     // Public, client-side Firebase Web SDK config for website phone/OTP login.
