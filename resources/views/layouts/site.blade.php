@@ -102,7 +102,7 @@
             <div class="mt-12 flex flex-col items-start justify-between gap-4 border-t border-neutral-100 pt-6 text-xs text-neutral-400 sm:flex-row sm:items-center">
                 <div class="space-y-1">
                     <p>&copy; {{ __('site.footer.copyright', ['year' => now()->year]) }}</p>
-                    <p>{{ __('site.footer.developed_by', ['company' => 'Maveric Infotech']) }}</p>
+                    <p>{{ __('site.footer.developed_by', ['company' => 'Unity Ventures Sales and Services']) }}</p>
                 </div>
                 <x-language-switcher />
             </div>
