@@ -26,7 +26,23 @@ class PhonePeSettings extends Page implements HasForms
 
     public function mount(): void
     {
-        $this->form->fill(PaymentGatewaySetting::forGateway('phonepe')->toArray());
+        $setting = PaymentGatewaySetting::forGateway('phonepe');
+
+        // Not toArray() — the model hides the secret fields from serialization
+        // (so they never leak via API responses), but the form needs their
+        // real decrypted values to avoid wiping them out on the next save.
+        $this->form->fill([
+            'client_id' => $setting->client_id,
+            'client_secret' => $setting->client_secret,
+            'client_version' => $setting->client_version,
+            'sandbox_client_id' => $setting->sandbox_client_id,
+            'sandbox_client_secret' => $setting->sandbox_client_secret,
+            'sandbox_client_version' => $setting->sandbox_client_version,
+            'webhook_username' => $setting->webhook_username,
+            'webhook_password' => $setting->webhook_password,
+            'is_sandbox' => $setting->is_sandbox,
+            'is_active' => $setting->is_active,
+        ]);
     }
 
     public function form(Form $form): Form
