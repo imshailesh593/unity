@@ -27,6 +27,7 @@ class UserResource extends JsonResource
             'author_tier' => $this->author_tier,
             'activation_progress' => [
                 'has_paid' => $this->has_paid,
+                'activation_fee' => $activation->activationFee(),
                 'referrals_required' => $activation->requiredReferrals(),
                 'referrals_paid' => $activation->paidReferralsCount($this->resource),
             ],
