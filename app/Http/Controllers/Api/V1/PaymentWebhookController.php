@@ -20,23 +20,25 @@ class PaymentWebhookController extends Controller
     ) {}
 
     /**
-     * Razorpay webhook callback. Signature-verified, idempotent (safe to
-     * receive the same event more than once), and never trusts the payload
-     * for anything beyond "which order does this refer to".
+     * PhonePe webhook callback. Basic-Auth verified via the PhonePe SDK,
+     * idempotent (safe to receive the same event more than once), and never
+     * trusts the payload for anything beyond "which order does this refer
+     * to" — the callback's own verified state is what we act on.
      */
     public function handle(Request $request)
     {
-        $signature = $request->header('X-Razorpay-Signature', '');
+        $callback = $this->gateway->verifyCallback(
+            ['authorization' => $request->header('Authorization', '')],
+            $request->getContent(),
+        );
 
-        if (! $signature || ! $this->gateway->verifyWebhookSignature($request->getContent(), $signature)) {
+        if (! $callback) {
             Log::warning('Payment webhook signature verification failed.');
 
             return response()->json(['message' => 'Invalid signature.'], 400);
         }
 
-        $event = $request->input('event');
-        $entity = $request->input('payload.payment.entity', []);
-        $orderId = $entity['order_id'] ?? null;
+        $orderId = $callback->getPayload()->getMerchantOrderId();
 
         if (! $orderId) {
             return response()->json(['message' => 'No order reference in payload.'], 422);
@@ -52,7 +54,7 @@ class PaymentWebhookController extends Controller
             return response()->json(['message' => 'Already processed.']);
         }
 
-        if ($event !== 'payment.captured') {
+        if ($callback->getType() !== 'CHECKOUT_ORDER_COMPLETED') {
             $payment->update(['status' => 'failed']);
 
             return response()->json(['message' => 'Acknowledged.']);
@@ -60,12 +62,6 @@ class PaymentWebhookController extends Controller
 
         DB::transaction(function () use ($payment) {
             $payment->update(['status' => 'success']);
-
-            if ($payment->purpose === 'cause_contribution' && $payment->cause_id) {
-                $payment->cause()->increment('raised_amount', $payment->amount);
-
-                return;
-            }
 
             $user = $payment->user;
             $user->update(['has_paid' => true]);

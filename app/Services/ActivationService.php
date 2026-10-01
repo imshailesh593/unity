@@ -57,7 +57,7 @@ class ActivationService
      * so both go through the exact same webhook-confirmed flow. Caller is
      * responsible for checking $user->has_paid first.
      *
-     * @return array{payment_id: int, gateway: string, order_id: string, amount: int, currency: string, key: ?string}
+     * @return array{payment_id: int, gateway: string, order_id: string, amount: int, currency: string, redirect_url: string}
      */
     public function initiatePayment(User $user): array
     {
@@ -67,7 +67,7 @@ class ActivationService
         $payment = Payment::create([
             'user_id' => $user->id,
             'amount' => $amount,
-            'gateway' => 'razorpay',
+            'gateway' => 'phonepe',
             'gateway_txn_id' => $order['id'],
             'status' => 'pending',
             'purpose' => 'self_activation',
@@ -75,11 +75,11 @@ class ActivationService
 
         return [
             'payment_id' => $payment->id,
-            'gateway' => 'razorpay',
+            'gateway' => 'phonepe',
             'order_id' => $order['id'],
             'amount' => $order['amount'],
             'currency' => $order['currency'],
-            'key' => config('services.razorpay.key'),
+            'redirect_url' => $order['redirect_url'],
         ];
     }
 }

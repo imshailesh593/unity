@@ -42,7 +42,9 @@ it('returns referral summary with referred users', function () {
 
 it('initiates a payment order for an unpaid user', function () {
     $this->mock(PaymentGatewayService::class, function ($mock) {
-        $mock->shouldReceive('createOrder')->andReturn(['id' => 'order_abc', 'amount' => 199, 'currency' => 'INR']);
+        $mock->shouldReceive('createOrder')->andReturn([
+            'id' => 'order_abc', 'amount' => 199, 'currency' => 'INR', 'redirect_url' => 'https://mercury.phonepe.com/pg/abc',
+        ]);
     });
 
     $user = User::factory()->create(['has_paid' => false]);

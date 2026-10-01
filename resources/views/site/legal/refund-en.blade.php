@@ -14,7 +14,7 @@
 <p>Contact <a href="mailto:support@unityapp.in">support@unityapp.in</a> with your registered phone number and payment reference within 7 days of the transaction. We will investigate and respond within 5 business days.</p>
 
 <h2>4. Refund timeline</h2>
-<p>Approved refunds are processed back to the original payment method via Razorpay and typically reflect within 5–10 business days, depending on your bank or payment provider.</p>
+<p>Approved refunds are processed back to the original payment method via PhonePe and typically reflect within 5–10 business days, depending on your bank or payment provider.</p>
 
 <h2>5. Contact</h2>
 <p>For any refund-related question, contact <a href="mailto:support@unityapp.in">support@unityapp.in</a>.</p>

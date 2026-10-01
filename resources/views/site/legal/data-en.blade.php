@@ -3,7 +3,7 @@
 <h2>1. What we store</h2>
 <ul>
     <li>Profile data — name, phone number, email, activation status.</li>
-    <li>Payment records — amount, gateway, transaction reference, and status (not your card/UPI details, which Razorpay handles directly).</li>
+    <li>Payment records — amount, gateway, transaction reference, and status (not your card/UPI details, which PhonePe handles directly).</li>
     <li>Device tokens — used solely to deliver push notifications, removable at any time by uninstalling the app or revoking notification permissions.</li>
     <li>In-app notifications — records of messages sent to you (activation status, payment receipts, admin broadcasts).</li>
 </ul>
@@ -28,7 +28,7 @@
         <tr><th>Provider</th><th>Data shared</th><th>Purpose</th></tr>
     </thead>
     <tbody>
-        <tr><td>Razorpay</td><td>Payment amount, order reference</td><td>Processing the activation fee</td></tr>
+        <tr><td>PhonePe</td><td>Payment amount, order reference</td><td>Processing the activation fee</td></tr>
         <tr><td>Firebase / Google</td><td>Phone number, device token</td><td>OTP verification, push notifications</td></tr>
         <tr><td>MSG91</td><td>Phone number</td><td>Transactional SMS delivery</td></tr>
         <tr><td>Hostinger</td><td>All application data</td><td>Hosting &amp; database storage</td></tr>

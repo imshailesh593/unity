@@ -34,6 +34,7 @@ it('renders every core admin resource index page', function () {
         '/admin/broadcast-notification',
         '/admin/causes',
         '/admin/sos-alerts',
+        '/admin/phone-pe-settings',
     ];
 
     foreach ($routes as $route) {

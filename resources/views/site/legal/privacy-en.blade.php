@@ -4,7 +4,7 @@
 <ul>
     <li><strong>Account information</strong> — your name, phone number, and (optionally) email address.</li>
     <li><strong>Identity verification</strong> — a Firebase-issued identifier confirming your phone number was verified by OTP.</li>
-    <li><strong>Payment records</strong> — the amount, status, and transaction reference for your activation fee payment (processed by Razorpay; we do not receive or store your card, UPI, or bank details).</li>
+    <li><strong>Payment records</strong> — the amount, status, and transaction reference for your activation fee payment (processed by PhonePe; we do not receive or store your card, UPI, or bank details).</li>
     <li><strong>Device token</strong> — a Firebase Cloud Messaging identifier, so we can deliver push notifications to your device.</li>
     <li><strong>Content you submit</strong> — anything you post through an approved author account (community posts, updates).</li>
 </ul>
@@ -22,7 +22,7 @@
 <p>We share the minimum data necessary with the following providers to operate Unity:</p>
 <ul>
     <li><strong>Firebase / Google</strong> — phone OTP verification and push notifications.</li>
-    <li><strong>Razorpay</strong> — payment processing for the activation fee.</li>
+    <li><strong>PhonePe</strong> — payment processing for the activation fee.</li>
     <li><strong>MSG91</strong> — transactional SMS delivery (OTP fallback, confirmations).</li>
     <li><strong>Hostinger</strong> — application hosting and database storage.</li>
 </ul>

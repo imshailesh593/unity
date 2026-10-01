@@ -36,7 +36,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::get('sos/{sosAlert}', [SosAlertController::class, 'show']);
 
     // Gateway webhook — authenticated via signature, not Sanctum.
-    Route::post('webhooks/payment', [PaymentWebhookController::class, 'handle']);
+    Route::post('webhooks/payment', [PaymentWebhookController::class, 'handle'])->name('webhooks.payment');
 
     // Authenticated app endpoints.
     Route::middleware('auth:sanctum')->group(function () {

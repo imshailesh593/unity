@@ -35,10 +35,13 @@ return [
         ],
     ],
 
-    'razorpay' => [
-        'key' => env('RAZORPAY_KEY'),
-        'secret' => env('RAZORPAY_SECRET'),
-        'webhook_secret' => env('RAZORPAY_WEBHOOK_SECRET'),
+    // Fallback defaults only — the live/active PhonePe credentials are
+    // normally managed via the admin panel's PhonePe Settings page
+    // (App\Models\PaymentGatewaySetting), which takes precedence.
+    'phonepe' => [
+        'client_id' => env('PHONEPE_CLIENT_ID'),
+        'client_secret' => env('PHONEPE_CLIENT_SECRET'),
+        'client_version' => env('PHONEPE_CLIENT_VERSION'),
     ],
 
     'msg91' => [

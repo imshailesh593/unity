@@ -5,46 +5,46 @@ use App\Models\Referral;
 use App\Models\Setting;
 use App\Models\User;
 use App\Services\PaymentGatewayService;
+use PhonePe\payments\v2\models\response\CallbackResponse;
 
 beforeEach(function () {
     Setting::set('activation_fee', 199);
     Setting::set('required_referrals', 2);
 });
 
-function fakeValidSignature(): void
+function phonePeCallback(string $merchantOrderId, string $type = 'CHECKOUT_ORDER_COMPLETED'): CallbackResponse
 {
-    test()->mock(PaymentGatewayService::class, function ($mock) {
-        $mock->shouldReceive('verifyWebhookSignature')->andReturn(true);
-    });
+    return CallbackResponse::getInstance(json_encode([
+        'type' => $type,
+        'payload' => [
+            'merchantId' => 'TESTMERCHANT',
+            'merchantOrderId' => $merchantOrderId,
+            'orderId' => 'OMO'.strtoupper($merchantOrderId),
+            'state' => $type === 'CHECKOUT_ORDER_COMPLETED' ? 'COMPLETED' : 'FAILED',
+            'amount' => 19900,
+        ],
+    ]));
 }
 
-function razorpayPayload(string $orderId, string $event = 'payment.captured'): array
+function fakeValidCallback(string $merchantOrderId, string $type = 'CHECKOUT_ORDER_COMPLETED'): void
 {
-    return [
-        'event' => $event,
-        'payload' => [
-            'payment' => [
-                'entity' => [
-                    'order_id' => $orderId,
-                    'id' => 'pay_'.$orderId,
-                ],
-            ],
-        ],
-    ];
+    test()->mock(PaymentGatewayService::class, function ($mock) use ($merchantOrderId, $type) {
+        $mock->shouldReceive('verifyCallback')->andReturn(phonePeCallback($merchantOrderId, $type));
+    });
 }
 
 it('rejects a webhook with an invalid signature', function () {
     test()->mock(PaymentGatewayService::class, function ($mock) {
-        $mock->shouldReceive('verifyWebhookSignature')->andReturn(false);
+        $mock->shouldReceive('verifyCallback')->andReturn(null);
     });
 
-    $this->postJson('/api/v1/webhooks/payment', razorpayPayload('order_x'), [
-        'X-Razorpay-Signature' => 'bad-signature',
+    $this->postJson('/api/v1/webhooks/payment', [], [
+        'Authorization' => 'bad-signature',
     ])->assertStatus(400);
 });
 
 it('marks payment successful and activates a user once both conditions are met', function () {
-    fakeValidSignature();
+    fakeValidCallback('order_referred');
 
     $referrer = User::factory()->create(['has_paid' => true, 'status' => 'pending']);
     Referral::create(['referrer_id' => $referrer->id, 'referred_id' => User::factory()->create()->id, 'referred_paid' => true]);
@@ -55,14 +55,14 @@ it('marks payment successful and activates a user once both conditions are met',
     $payment = Payment::create([
         'user_id' => $referredUser->id,
         'amount' => 199,
-        'gateway' => 'razorpay',
+        'gateway' => 'phonepe',
         'gateway_txn_id' => 'order_referred',
         'status' => 'pending',
         'purpose' => 'self_activation',
     ]);
 
-    $this->postJson('/api/v1/webhooks/payment', razorpayPayload('order_referred'), [
-        'X-Razorpay-Signature' => 'sig',
+    $this->postJson('/api/v1/webhooks/payment', [], [
+        'Authorization' => 'sig',
     ])->assertOk();
 
     expect($payment->fresh()->status)->toBe('success');
@@ -73,61 +73,50 @@ it('marks payment successful and activates a user once both conditions are met',
 });
 
 it('is idempotent when the same webhook event is replayed', function () {
-    fakeValidSignature();
+    fakeValidCallback('order_dup');
 
     $user = User::factory()->create();
     $payment = Payment::create([
         'user_id' => $user->id,
         'amount' => 199,
-        'gateway' => 'razorpay',
+        'gateway' => 'phonepe',
         'gateway_txn_id' => 'order_dup',
         'status' => 'success',
         'purpose' => 'self_activation',
     ]);
 
-    $response = $this->postJson('/api/v1/webhooks/payment', razorpayPayload('order_dup'), [
-        'X-Razorpay-Signature' => 'sig',
+    $response = $this->postJson('/api/v1/webhooks/payment', [], [
+        'Authorization' => 'sig',
     ]);
 
     $response->assertOk()->assertJson(['message' => 'Already processed.']);
 });
 
 it('returns 404 for an unknown order', function () {
-    fakeValidSignature();
+    fakeValidCallback('does_not_exist');
 
-    $this->postJson('/api/v1/webhooks/payment', razorpayPayload('does_not_exist'), [
-        'X-Razorpay-Signature' => 'sig',
+    $this->postJson('/api/v1/webhooks/payment', [], [
+        'Authorization' => 'sig',
     ])->assertStatus(404);
 });
 
-it('increments cause raised_amount on a successful contribution, without touching activation', function () {
-    fakeValidSignature();
+it('marks the payment failed on a CHECKOUT_ORDER_FAILED callback without activating the user', function () {
+    fakeValidCallback('order_failed', 'CHECKOUT_ORDER_FAILED');
 
-    $organizer = User::factory()->organizer()->create();
-    $cause = \App\Models\Cause::factory()->create([
-        'organizer_id' => $organizer->id,
-        'status' => 'published',
-        'goal_amount' => 100000,
-        'raised_amount' => 5000,
-    ]);
-
-    $contributor = User::factory()->create(['has_paid' => false, 'status' => 'registered']);
+    $user = User::factory()->create(['has_paid' => false]);
     $payment = Payment::create([
-        'user_id' => $contributor->id,
-        'cause_id' => $cause->id,
-        'amount' => 500,
-        'gateway' => 'razorpay',
-        'gateway_txn_id' => 'order_cause_contrib',
+        'user_id' => $user->id,
+        'amount' => 199,
+        'gateway' => 'phonepe',
+        'gateway_txn_id' => 'order_failed',
         'status' => 'pending',
-        'purpose' => 'cause_contribution',
+        'purpose' => 'self_activation',
     ]);
 
-    $this->postJson('/api/v1/webhooks/payment', razorpayPayload('order_cause_contrib'), [
-        'X-Razorpay-Signature' => 'sig',
+    $this->postJson('/api/v1/webhooks/payment', [], [
+        'Authorization' => 'sig',
     ])->assertOk();
 
-    expect($payment->fresh()->status)->toBe('success');
-    expect($cause->fresh()->raised_amount)->toBe(5500);
-    // Contribution must never affect the contributor's own activation state.
-    expect($contributor->fresh()->has_paid)->toBeFalse();
+    expect($payment->fresh()->status)->toBe('failed');
+    expect($user->fresh()->has_paid)->toBeFalse();
 });

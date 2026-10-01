@@ -13,7 +13,7 @@
 <p>Community posts and blog posts are reviewed by our admin team before they are published. We may refuse or remove any content that does not meet our community standards.</p>
 
 <h2>5. Payments</h2>
-<p>The activation fee is processed securely through Razorpay. See our <a href="{{ route('legal.refund') }}">Refund &amp; Cancellation Policy</a> for details on when a refund may apply.</p>
+<p>The activation fee is processed securely through PhonePe. See our <a href="{{ route('legal.refund') }}">Refund &amp; Cancellation Policy</a> for details on when a refund may apply.</p>
 
 <h2>6. Acceptable use</h2>
 <p>You agree not to:</p>

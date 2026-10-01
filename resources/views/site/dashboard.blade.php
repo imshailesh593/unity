@@ -49,7 +49,15 @@
                                     class="mt-4 w-full rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-white shadow-sm shadow-brand-blue/30 hover:bg-brand-blue-dark disabled:opacity-60">
                                 {{ __('site.dashboard.pay_now', ['amount' => '₹'.$activationFee]) }}
                             </button>
-                            <p id="payment-status" class="mt-3 hidden text-sm"></p>
+                            <p id="payment-status" class="mt-3 text-sm {{ session('payment_status') ? '' : 'hidden' }}">
+                                @if(session('payment_status') === 'success')
+                                    {{ __('site.dashboard.payment_success') }}
+                                @elseif(session('payment_status') === 'failed')
+                                    {{ __('site.dashboard.payment_failed') }}
+                                @elseif(session('payment_status') === 'pending')
+                                    {{ __('site.dashboard.processing_payment') }}
+                                @endif
+                            </p>
                         @endunless
                     </div>
                 </div>
@@ -58,10 +66,6 @@
     </section>
 
     @unless($user->isActive() || $user->has_paid)
-        {{-- Razorpay's checkout.js is an unversioned, frequently-updated endpoint by
-             design (fraud-detection rules ship through it); Razorpay's own docs do
-             not support pinning it with Subresource Integrity. --}}
-        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
         <script>
             document.getElementById('pay-now-btn').addEventListener('click', async (event) => {
                 const button = event.currentTarget;
@@ -80,40 +84,17 @@
                     });
                     const order = await response.json();
 
-                    if (!response.ok) {
+                    if (!response.ok || !order.redirect_url) {
                         statusEl.textContent = order.message || @json(__('site.dashboard.payment_failed'));
                         statusEl.classList.remove('hidden');
                         button.disabled = false;
                         return;
                     }
 
-                    const razorpay = new Razorpay({
-                        key: order.key,
-                        amount: order.amount * 100,
-                        currency: order.currency,
-                        order_id: order.order_id,
-                        name: 'Unity',
-                        description: @json(__('site.dashboard.step_fee_title')),
-                        prefill: { name: @json($user->name), contact: @json($user->phone) },
-                        handler: function () {
-                            statusEl.textContent = @json(__('site.dashboard.payment_success'));
-                            statusEl.classList.remove('hidden');
-                            setTimeout(() => window.location.reload(), 4000);
-                        },
-                        modal: {
-                            ondismiss: function () {
-                                button.disabled = false;
-                            },
-                        },
-                    });
-
-                    razorpay.on('payment.failed', function () {
-                        statusEl.textContent = @json(__('site.dashboard.payment_failed'));
-                        statusEl.classList.remove('hidden');
-                        button.disabled = false;
-                    });
-
-                    razorpay.open();
+                    // PhonePe's Standard Checkout is redirect-based — the browser
+                    // navigates to PhonePe's hosted page and comes back to our
+                    // return route, which redirects here with a status flash.
+                    window.location.href = order.redirect_url;
                 } catch (error) {
                     statusEl.textContent = @json(__('site.dashboard.payment_failed'));
                     statusEl.classList.remove('hidden');

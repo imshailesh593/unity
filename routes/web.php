@@ -9,6 +9,7 @@ use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Site\LegalController;
 use App\Http\Controllers\Site\LocaleController;
 use App\Http\Controllers\Site\PageController;
+use App\Http\Controllers\Site\PaymentReturnController;
 use App\Http\Controllers\Site\ReferralLandingController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,4 +38,5 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/dashboard/activate', [ActivationController::class, 'initiate'])->name('activation.initiate');
+    Route::get('/payment/phonepe/return', [PaymentReturnController::class, 'show'])->name('payment.phonepe.return');
 });
