@@ -59,10 +59,10 @@ class ActivationService
      *
      * @return array{payment_id: int, gateway: string, order_id: string, amount: int, currency: string, redirect_url: string}
      */
-    public function initiatePayment(User $user): array
+    public function initiatePayment(User $user, ?string $redirectUrl = null): array
     {
         $amount = $this->activationFee();
-        $order = $this->gateway->createOrder($amount, receipt: "activation-{$user->id}-".now()->timestamp);
+        $order = $this->gateway->createOrder($amount, receipt: "activation-{$user->id}-".now()->timestamp, redirectUrl: $redirectUrl);
 
         $payment = Payment::create([
             'user_id' => $user->id,

@@ -26,6 +26,12 @@ Route::get('/data-policy', [LegalController::class, 'data'])->name('legal.data')
 Route::get('/refund-policy', [LegalController::class, 'refund'])->name('legal.refund');
 Route::get('/child-safety-standards', [LegalController::class, 'childSafety'])->name('legal.child-safety');
 
+// Public, auth-free landing page for the mobile app's in-app WebView
+// checkout — the app has no Laravel web session, so it can't use the
+// website's authenticated return route. The app detects this URL and closes
+// the WebView itself; actual activation still only happens via the webhook.
+Route::get('/payment/complete', fn () => view('site.payment-complete'))->name('payment.complete');
+
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'show'])->name('login');
     Route::post('/login/verify', [LoginController::class, 'verify'])->name('login.verify');

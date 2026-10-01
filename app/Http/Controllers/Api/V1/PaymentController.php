@@ -22,6 +22,9 @@ class PaymentController extends Controller
             return response()->json(['message' => 'Activation fee already paid.'], 409);
         }
 
-        return response()->json($this->activation->initiatePayment($user), 201);
+        // The app has no Laravel web session, so it can't use the website's
+        // authenticated return route — it gets a plain, public "done" page
+        // its in-app WebView can detect by URL and then close itself.
+        return response()->json($this->activation->initiatePayment($user, redirectUrl: route('payment.complete')), 201);
     }
 }

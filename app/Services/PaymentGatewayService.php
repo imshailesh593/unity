@@ -31,15 +31,19 @@ class PaymentGatewayService
      * Creates a PhonePe order and returns the URL the user's browser must be
      * redirected to in order to complete payment on PhonePe's hosted page.
      *
+     * $redirectUrl defaults to the website's session-authenticated return
+     * route; callers without a web session (the mobile app) must pass their
+     * own auth-free return URL.
+     *
      * @return array{id: string, amount: int, currency: string, redirect_url: string}
      */
-    public function createOrder(int $amountInRupees, string $receipt): array
+    public function createOrder(int $amountInRupees, string $receipt, ?string $redirectUrl = null): array
     {
         $payRequest = StandardCheckoutPayRequestBuilder::builder()
             ->merchantOrderId($receipt)
             ->amount($amountInRupees * 100)
             ->message("Unity activation — {$receipt}")
-            ->redirectUrl(route('payment.phonepe.return'))
+            ->redirectUrl($redirectUrl ?? route('payment.phonepe.return'))
             ->build();
 
         $response = $this->client()->pay($payRequest);
