@@ -18,8 +18,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.v1.')->group(function () {
 
-    // Auth — tightly throttled to slow down OTP/registration abuse.
-    Route::middleware('throttle:10,1')->prefix('auth')->group(function () {
+    // Auth — throttled to slow down OTP/registration abuse. Kept generous
+    // because mobile carriers commonly NAT many real users behind one IP,
+    // and Laravel's default throttle key is per-IP for guests.
+    Route::middleware('throttle:60,1')->prefix('auth')->group(function () {
         Route::post('verify-otp', [OtpController::class, 'verify']);
         Route::post('register', [RegisterController::class, 'register']);
     });
