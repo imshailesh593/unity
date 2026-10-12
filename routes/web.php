@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CauseDocumentFileController;
 use App\Http\Controllers\Admin\DocumentFileController;
 use App\Http\Controllers\Site\ActivationController;
 use App\Http\Controllers\Site\Auth\LoginController;
@@ -53,3 +54,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/admin/documents/{document}/view', [DocumentFileController::class, 'show'])
     ->middleware(['auth', 'signed'])
     ->name('admin.documents.view');
+
+Route::get('/admin/cause-documents/{causeDocument}/view', [CauseDocumentFileController::class, 'show'])
+    ->middleware(['auth', 'signed'])
+    ->name('admin.cause-documents.view');

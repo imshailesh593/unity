@@ -2,6 +2,8 @@
 
 use App\Models\Cause;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 it('lists only published causes', function () {
     Cause::factory()->create(['status' => 'published', 'title' => 'Live Cause', 'slug' => 'live-cause']);
@@ -27,21 +29,10 @@ it('shows a single published cause with progress percent', function () {
         ->assertJsonPath('data.progress_percent', 45);
 });
 
-it('rejects cause creation from a non-organizer', function () {
+it('lets any member — not just organizers — raise a help request, starting as pending_review', function () {
     $member = User::factory()->create();
 
-    $this->actingAs($member, 'sanctum')
-        ->postJson('/api/v1/causes', [
-            'title' => 'New Cause',
-            'content' => 'Details',
-            'goal_amount' => 50000,
-        ])->assertForbidden();
-});
-
-it('allows an organizer to create a cause, starting as pending_review', function () {
-    $organizer = User::factory()->organizer()->create();
-
-    $response = $this->actingAs($organizer, 'sanctum')
+    $response = $this->actingAs($member, 'sanctum')
         ->postJson('/api/v1/causes', [
             'title' => 'New Cause',
             'content' => 'Details of the cause',
@@ -51,9 +42,40 @@ it('allows an organizer to create a cause, starting as pending_review', function
     $response->assertCreated();
     $this->assertDatabaseHas('causes', [
         'title' => 'New Cause',
-        'organizer_id' => $organizer->id,
+        'organizer_id' => $member->id,
         'status' => 'pending_review',
     ]);
+});
+
+it('stores attached supporting documents on the private disk', function () {
+    Storage::fake('local');
+    $member = User::factory()->create();
+
+    $response = $this->actingAs($member, 'sanctum')
+        ->postJson('/api/v1/causes', [
+            'title' => 'Medical help needed',
+            'content' => 'Details of the cause',
+            'documents' => [
+                UploadedFile::fake()->image('bill.jpg'),
+                UploadedFile::fake()->create('report.pdf', 100, 'application/pdf'),
+            ],
+        ]);
+
+    $response->assertCreated();
+    $cause = Cause::query()->where('title', 'Medical help needed')->firstOrFail();
+    expect($cause->documents()->count())->toBe(2);
+    $cause->documents->each(fn ($document) => Storage::disk('local')->assertExists($document->file_path));
+});
+
+it('rejects more than 4 attached documents', function () {
+    $member = User::factory()->create();
+
+    $this->actingAs($member, 'sanctum')
+        ->postJson('/api/v1/causes', [
+            'title' => 'New Cause',
+            'content' => 'Details',
+            'documents' => array_fill(0, 5, UploadedFile::fake()->image('doc.jpg')),
+        ])->assertUnprocessable();
 });
 
 it('has no contribution endpoint — cause money-collection is disabled', function () {

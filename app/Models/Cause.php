@@ -41,6 +41,11 @@ class Cause extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function documents(): HasMany
+    {
+        return $this->hasMany(CauseDocument::class);
+    }
+
     public function progressPercent(): int
     {
         if ($this->goal_amount <= 0) {

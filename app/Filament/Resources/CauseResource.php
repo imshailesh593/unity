@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 class CauseResource extends Resource
@@ -131,6 +132,17 @@ class CauseResource extends Resource
                 Tables\Filters\TernaryFilter::make('verified'),
             ])
             ->actions([
+                Tables\Actions\Action::make('documents')
+                    ->label(fn (Cause $record) => 'Documents ('.$record->documents()->count().')')
+                    ->icon('heroicon-o-paper-clip')
+                    ->color('gray')
+                    ->visible(fn (Cause $record) => $record->documents()->exists())
+                    ->modalHeading('Supporting documents')
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Close')
+                    ->modalContent(fn (Cause $record) => view('filament.partials.cause-documents', [
+                        'documents' => $record->documents,
+                    ])),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

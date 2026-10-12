@@ -6,9 +6,13 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCauseRequest extends FormRequest
 {
+    /**
+     * Any authenticated member can raise a help request — this isn't
+     * restricted to organizer-tier the way SOS alerts are.
+     */
     public function authorize(): bool
     {
-        return $this->user()->isOrganizer();
+        return true;
     }
 
     public function rules(): array
@@ -20,6 +24,8 @@ class StoreCauseRequest extends FormRequest
             'content' => ['required', 'string'],
             'goal_amount' => ['nullable', 'integer', 'min:0'],
             'deadline' => ['nullable', 'date', 'after:today'],
+            'documents' => ['nullable', 'array', 'max:4'],
+            'documents.*' => ['file', 'mimes:jpg,jpeg,png,pdf', 'max:5120'],
         ];
     }
 }
