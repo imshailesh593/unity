@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\BlogController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CauseController;
 use App\Http\Controllers\Api\V1\DeviceTokenController;
+use App\Http\Controllers\Api\V1\DocumentController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\PaymentController;
 use App\Http\Controllers\Api\V1\PaymentWebhookController;
@@ -47,6 +48,8 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::post('payment/initiate', [PaymentController::class, 'initiate']);
         Route::get('notifications', [NotificationController::class, 'index']);
         Route::post('device-token', [DeviceTokenController::class, 'store']);
+        Route::get('documents', [DocumentController::class, 'index']);
+        Route::post('documents', [DocumentController::class, 'store']);
 
         // Organizer-tier only (enforced in StoreCauseRequest::authorize()).
         Route::post('causes', [CauseController::class, 'store']);

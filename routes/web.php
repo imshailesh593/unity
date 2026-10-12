@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DocumentFileController;
 use App\Http\Controllers\Site\ActivationController;
 use App\Http\Controllers\Site\Auth\LoginController;
 use App\Http\Controllers\Site\Auth\RegisterController;
@@ -46,3 +47,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/dashboard/activate', [ActivationController::class, 'initiate'])->name('activation.initiate');
     Route::get('/payment/phonepe/return', [PaymentReturnController::class, 'show'])->name('payment.phonepe.return');
 });
+
+// Admin-only document review — signed (short-lived, generated only from the
+// Filament table action) plus a role check inside the controller itself.
+Route::get('/admin/documents/{document}/view', [DocumentFileController::class, 'show'])
+    ->middleware(['auth', 'signed'])
+    ->name('admin.documents.view');
