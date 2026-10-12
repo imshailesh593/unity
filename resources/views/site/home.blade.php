@@ -250,7 +250,9 @@
                     {{-- Unity --}}
                     <div class="rounded-2xl bg-linear-to-br from-brand-blue to-brand-blue-dark p-8 shadow-xl shadow-brand-blue/20 sm:rounded-l-none">
                         <h3 class="flex items-center gap-2 text-sm font-semibold text-white">
-                            <img src="{{ asset('images/brand/logo-icon.png') }}" alt="" class="h-5 w-5">
+                            <span class="flex h-5 w-5 items-center justify-center rounded-full bg-white">
+                                <img src="{{ asset('images/brand/logo-icon.png') }}" alt="" class="h-4 w-4">
+                            </span>
                             {{ __('site.home.compare_good_heading') }}
                         </h3>
                         <ul class="mt-6 space-y-6">
